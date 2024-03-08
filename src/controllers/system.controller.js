@@ -10,7 +10,7 @@ export function reboot(req, res) {
 }
 
 export function shutdown(req, res) {
-	const time = req.params.time ?? now;
+	const time = req.params.time ?? "now";
 
 	exec(`sudo shutdown -h ${time}`);
 }
