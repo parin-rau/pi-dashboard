@@ -20,7 +20,7 @@ node child_process exec() test
 
 #### /system/shutdown/[time]
 
-defaults to immediate shutdown
+defaults to immediate shutdown if time parameter not provided
 
 ### /weather
 

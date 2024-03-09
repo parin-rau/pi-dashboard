@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Pi Dashboard</title>
+		<!-- <script type="text/javascript" src="../utils/getIp.js"></script> -->
+	</head>
+
+	<body>
+		<div id="content">
+			<h2>Hello world</h2>
+			<p>This is a static page from the server</p>
+		</div>
+	</body>
+
+	<script type="module">
+		//import { getDeviceIp } from "../utils/getIp.js";
+		const p = document.createElement("p");
+		const parent = document.getElementById("content");
+
+		p.innerText = "hi mom"; //getDeviceIp();
+		parent.appendChild(p);
+	</script>
+</html>
