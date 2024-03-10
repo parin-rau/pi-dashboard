@@ -1,5 +1,5 @@
 import { exec, execSync } from "child_process";
-import os from "os";
+//import os from "os";
 import { getDeviceIp } from "../utils/getIp.js";
 
 export function hello(req, res) {
@@ -15,7 +15,7 @@ export function hello(req, res) {
 export function getIp(req, res) {
 	const deviceIp = getDeviceIp() ?? "Can't get server IP address";
 	console.log(deviceIp);
-	res.send(deviceIp);
+	res.send({ ip: deviceIp });
 
 	// const networkInterfaces = os.networkInterfaces();
 	// const { platform, arch } = { platform: os.platform(), arch: os.arch() };

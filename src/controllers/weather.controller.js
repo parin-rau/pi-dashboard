@@ -10,10 +10,15 @@ export async function getWeather(req, res) {
 	// 	`${url}/points/${LOCATION.lat},${LOCATION.long}`
 	// );
 
-	const coords = await getCoords(location);
+	//const coords = await getCoords(location);
+
+	// TODO: add check for location/coordinates in sqlite as default, else prompt for location entry.
+	// Don't lookup coordinates if already populated. Limited geolocation API calls.
+
+	const coords = { lat: "37.7792588", lon: "-122.4193286" };
 	console.log(coords);
 
-	const result = await fetch(`${url}/points/${coords.lat},${coords.long}`);
+	const result = await fetch(`${url}/points/${coords.lat},${coords.lon}`);
 
 	const weather = await result.json();
 	console.log(weather);

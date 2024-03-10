@@ -6,22 +6,15 @@
 		<title>Pi Dashboard</title>
 		<link rel="shortcut icon" href="#" />
 		<link href="./output.css" rel="stylesheet" />
-		<!-- <script type="text/javascript" src="../utils/getIp.js"></script> -->
+		<script type="module" async src="/scripts/index.script.js"></script>
 	</head>
 
 	<body class="bg-neutral-900 text-white">
-		<div id="content" class="p-10 flex flex-col gap-10">
+		<div class="p-10 flex flex-col gap-10">
 			<h2 class="font-bold text-2xl">Hello world</h2>
-			<p>This is a static page from the server</p>
+			<div id="content" class="flex flex-col gap-2">
+				<p>This is a static page from the server</p>
+			</div>
 		</div>
 	</body>
-
-	<script type="module">
-		//import { getDeviceIp } from "../utils/getIp.js";
-		const p = document.createElement("p");
-		const parent = document.getElementById("content");
-
-		p.innerText = "hi mom"; //getDeviceIp();
-		parent.appendChild(p);
-	</script>
 </html>

@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-//import path from "path";
+import path from "path";
 import { systemRouter } from "./routes/system.route.js";
 // import { weatherRouter } from "./routes/weather.route.js";
 // import { calendarRouter } from "./routes/calendar.route.js";
@@ -13,7 +13,8 @@ const port = process.env.PORT ?? 3000;
 const __dirname = import.meta.dirname;
 
 app.use(express.json());
-//app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(path.join(__dirname, "utils")));
 
 // app.get("/", (req, res) => {
 // 	res.sendFile();

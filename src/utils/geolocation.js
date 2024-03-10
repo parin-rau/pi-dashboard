@@ -7,9 +7,9 @@ export async function getCoords(location) {
 
 	if (res.ok) {
 		const results = await res.json();
-		results.sort((a, b) => a.importance - b.importance);
+		results.sort((a, b) => b.importance - a.importance);
 
-		const coords = { lat: results[0].lat, long: results[0].long };
+		const coords = { lat: results[0].lat, lon: results[0].lon };
 		return coords;
 	}
 }
