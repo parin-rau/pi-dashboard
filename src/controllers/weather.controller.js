@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { getCoords } from "../utils/geolocation.js";
 import { getDeviceIp } from "../utils/getIp.js";
+import * as model from "../models/weather.model.js";
 
 const url = "https://api.weather.gov";
 
@@ -70,4 +71,11 @@ export async function getWeather(req, res) {
 	}
 
 	res.send("Unable to fetch weather forecast");
+}
+
+export async function logWeather(req, res) {
+	const result = await model.saveWeatherIcons();
+	console.log(result);
+
+	//res.send(logs);
 }

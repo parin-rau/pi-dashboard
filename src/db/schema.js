@@ -1,5 +1,5 @@
 export const settingsSchema = `
-    id INTEGER NOT NULL PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     port INTEGER,
     lat REAL,
     lon REAL,
@@ -9,7 +9,7 @@ export const settingsSchema = `
 `;
 
 export const weatherSchema = `
-    id INTEGER NOT NULL PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     shortForecast TEXT,
     timeOfDay TEXT,
     icon TEXT,
