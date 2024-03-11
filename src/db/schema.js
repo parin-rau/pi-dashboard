@@ -5,7 +5,7 @@ export const settingsSchema = `
     lon REAL,
     location TEXT
     locationiq_api_key TEXT,
-    darkmode INTEGER,
+    darkmode INTEGER
 `;
 
 export const weatherSchema = `
@@ -13,5 +13,5 @@ export const weatherSchema = `
     shortForecast TEXT,
     timeOfDay TEXT,
     icon TEXT,
-    iconUrl TEXT,
+    iconUrl TEXT
 `;

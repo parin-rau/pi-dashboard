@@ -1,5 +1,5 @@
-import { connectToDb } from "../db/sqlite";
-import { weatherSchema } from "../db/schema";
+import { connectToDb } from "../db/sqlite.js";
+import { weatherSchema } from "../db/schema.js";
 
 const { initTable, insertRow } = connectToDb();
 const table = "WeatherIcons";

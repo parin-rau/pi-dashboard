@@ -28,8 +28,6 @@ export const connectToDb = () => {
 				return console.error(e.message);
 			}
 
-			close();
-
 			console.log("ran query: ", sql);
 		});
 
@@ -89,50 +87,16 @@ export const connectToDb = () => {
 	const insertRow = ({ table, set }) => {};
 
 	const initTable = (tableName, columnSchemaStr) => {
-		// const sql = `
-		//     CREATE TABLE IF NOT EXISTS ${table_name}(
-		//         ${columns.reduce((prev, c) => prev + c + ", ")}
-		//     );`;
-
 		const sql = `
             CREATE TABLE IF NOT EXISTS ${tableName}(
                 ${columnSchemaStr}
             );`;
 
-		// const s = `
-		//     CREATE TABLE IF NOT EXISTS ${table_name}(
-		//         id INTEGER NOT NULL PRIMARY KEY,
-		//         port INTEGER,
-		//         lat REAL,
-		//         lon REAL,
-		//         location TEXT
-		//         locationiq_api_key TEXT,
-		//     );`;
-
-		// const s2 = `
-		// id INTEGER NOT NULL PRIMARY KEY,
-		// port INTEGER,
-		// lat REAL,
-		// lon REAL,
-		// location TEXT
-		// locationiq_api_key TEXT,
-		// `;
-
 		const result = run(sql);
-		close();
 		return result;
 	};
 
-	// const select = (columns, table_name) => {
-	// 	const sql = `
-	//         SELECT ${columns.map((c) => (columns.length > 1 ? c : c + ", "))}
-	//         FROM ${table_name};
-	//     `;
-	// 	return get(sql);
-	// };
-
-	const dropTable = (table) => db.run(`DROP TABLE ${table}`);
-	//const updateRow = () => run();
+	const dropTable = (table) => db.run(`DROP TABLE IF EXISTS ${table}`);
 
 	return {
 		initTable,
@@ -141,5 +105,6 @@ export const connectToDb = () => {
 		upsertRows,
 		insertRow,
 		dropTable,
+		close,
 	};
 };
