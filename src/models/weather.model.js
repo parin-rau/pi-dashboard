@@ -1,9 +1,9 @@
-import { connectToDb } from "../db/sqlite.js";
+import { openDb } from "../db/sqlite.js";
 import { weatherSchema } from "../db/schema.js";
 
 import { mockForecast } from "../test/testData.js";
 
-const { initTable, insertRow, close } = connectToDb();
+const { initTable, insertRow, close } = openDb();
 const table = "weatherIcons";
 const weatherApi = "https://api.weather.gov";
 

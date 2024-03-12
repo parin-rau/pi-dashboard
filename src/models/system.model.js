@@ -1,7 +1,7 @@
 import { settingsSchema } from "../db/schema";
-import { connectToDb } from "../db/sqlite";
+import { Db } from "../db/sqlite";
 
-const { initTable, readAllRows, readOneRow, upsertRows } = connectToDb();
+const { initTable, readAllRows, readOneRow, upsertRows } = openDb();
 const table = "settings";
 
 export const writeSettings = (formData) => {

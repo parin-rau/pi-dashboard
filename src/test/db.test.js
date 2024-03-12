@@ -1,9 +1,25 @@
-import { connectToDb } from "../db/sqlite.js";
+import { openDb } from "../db/sqlite.js";
 import { weatherSchema, settingsSchema } from "../db/schema.js";
+import { range } from "../utils/stringHelpers.js";
 
-const { initTable, close, dropTable, insertRow, readAllRows } = connectToDb();
+const {
+	makeTable,
+	close,
+	dropTable,
+	insertOne,
+	insertMany,
+	getMany,
+	getOne,
+	deleteRows,
+	updateOne,
+	upsertOne,
+} = await openDb();
 
-const table = "weatherIcons";
+const table = "test";
+const testSchema = `
+    id INTEGER PRIMARY KEY,
+    port INTEGER
+`;
 
 //initTable("settings", settingsSchema);
 //initTable("weather", weatherSchema);
@@ -19,11 +35,55 @@ const table = "weatherIcons";
 
 //console.log(weatherDataInsertedCount);
 
-const readSql = `SELECT * FROM ${table}`;
+//const readSql = `SELECT * FROM ${table}`;
 
-const data = readAllRows(readSql);
-close();
+//readAllRows(readSql, all);
 
-console.log(data.Database);
+// const one = await getOneRow({
+// 	table: "weatherIcons",
+// 	condition: { timeOfDay: "day", id: 11 },
+// 	columns: ["timeOfDay"],
+// });
 
-//close();
+// const multiple = await getMultipleRows({
+// 	table: "weatherIcons",
+// 	condition: { timeOfDay: "night" },
+// });
+
+const testSet = {
+	port: 8080,
+};
+
+const testSet2 = [
+	{
+		port: 200,
+	},
+	{ port: 3000 },
+];
+
+const testSet3 = [{ port: 45 }, { port: 36 }, { port: 111 }];
+
+const updateInput1 = { table, set: { port: 999 }, condition: { port: 36 } };
+const upsertInput = { table, set: { id: 4, port: 32 }, conflictKey: "id" };
+
+const iTable = await makeTable({ table: "test", schema: testSchema });
+
+// const one = await insert({ table, set: testSet });
+// const multiple = await insertMany({ table, set: testSet2 });
+// const multiple2 = await insertMany({ table, set: testSet3 });
+//console.log({ iTable, one, multiple, multiple2 });
+
+// const deletion1 = await deleteRows({ table, condition: { id: 11 } });
+// const deletion2 = await deleteRows({ table, condition: { id: [2, 4, 5] } });
+// const deletion3 = await deleteRows({ table, condition: { id: range(25, 34) } });
+// console.log({ iTable, deletion1, deletion2, deletion3 });
+
+//const drop = await dropTable("test");
+
+//const insert = await insertMany({ table: "test", set: testSet3 });
+//const update = await updateOne(updateInput1);
+const upsert = await upsertOne(upsertInput);
+
+console.log({ iTable, upsert });
+
+await close();

@@ -1,12 +1,16 @@
 import sqlite3 from "sqlite3";
 import path from "path";
-import { quotify, arrayJoin } from "../utils/stringHelpers.js";
+import { query } from "../utils/queryBuilder.js";
 
 const __dirname = import.meta.dirname;
 const filename = path.join(__dirname, "app.db");
-const separator = ", ";
 
-export const connectToDb = () => {
+sqlite3.verbose();
+
+// const promisify = (action) =>
+// 	new Promise((resolve, reject) => action(resolve, reject));
+
+export const openDb = async () => {
 	const db = new sqlite3.Database(filename, (e) => {
 		if (e) {
 			console.error(e.message);
@@ -16,141 +20,225 @@ export const connectToDb = () => {
 	});
 
 	const close = () =>
-		db.close((e) => {
-			if (e) {
-				return console.error(e.message);
-			}
+		new Promise((resolve, reject) =>
+			db.close((e) => {
+				if (e) {
+					console.error(e.message);
+					reject(e);
+				}
 
-			console.log("closing db connection");
+				console.log("Closing db connection");
+				resolve();
+			})
+		);
+
+	const getOne = ({ table, condition, columns }) =>
+		new Promise((resolve, reject) => {
+			const sql = query.select({ table, condition, columns });
+
+			db.get(sql, (err, row) => {
+				if (err) {
+					console.error(err.message);
+					reject({ success: false });
+				} else {
+					console.log(`Found row matching conditions in "${table}"`);
+					resolve({ row, success: true });
+				}
+			});
 		});
 
-	const run = (sql, { log } = { log: false }) =>
-		db.run(sql, (e) => {
-			if (e) {
-				return console.error(e.message);
-			}
+	const getMany = ({ table, condition, columns }) =>
+		new Promise((resolve, reject) => {
+			const sql = query.select({ table, condition, columns });
 
-			if (log === true) console.log("ran query: ", sql);
+			db.all(sql, (err, rows) => {
+				if (err) {
+					console.error(err.message);
+					reject({ success: false });
+				} else {
+					const foundCount = rows.length;
+					console.log(
+						`Found ${foundCount} matching rows in "${table}"`
+					);
+					resolve({ rows, foundCount, success: true });
+				}
+			});
 		});
 
-	const readOneRow = (sql, rowCallback) =>
-		db.get(sql, (err, row) => {
-			if (err) {
-				return console.error(e.message);
+	const defaultInsertOptions = { suppressLog: false };
+	const insertOne = ({ table, set, options = defaultInsertOptions }) =>
+		new Promise((resolve, reject) => {
+			const isArr = Array.isArray(set);
+
+			// console.log({ set, keys: !isArr ? Object.keys(set) : false });
+			// console.log([isArr]);
+			if (isArr) {
+				// let insertedCount = 0;
+				// set.forEach(async (s) => {
+				// 	return new Promise((resolve, reject) => {
+				// 		const sql = query.insert({ table, set: s });
+				// 		db.run(sql, (err) => {
+				// 			if (err) {
+				// 				console.error(err.message);
+				// 				reject({ success: false });
+				// 			} else {
+				// 				console.log(
+				// 					`Inserted ${insertedCount} rows into ${table}`
+				// 				);
+				// 				resolve({ insertedCount, success: true });
+				// 			}
+				// 		});
+				// 	});
+				// });
+				reject({
+					success: false,
+					insertedCount: 0,
+					message: "Use insertMany for multiple row insertion",
+				});
+			} else {
+				const sql = query.insert({ table, set });
+				db.run(sql, (err) => {
+					if (err) {
+						console.error(err.message);
+						reject({ success: false, insertedCount: 0 });
+					} else {
+						!options.suppressLog &&
+							console.log(`Inserted row into ${table}`);
+						resolve({ success: true, insertedCount: 1 });
+					}
+				});
 			}
 
-			const result = rowCallback ? rowCallback(row) : row;
-
-			//close();
-			return result;
+			// const sql = query.insert({ table, set });
+			// db.run(sql, (err) => {
+			// 	if (err) {
+			// 		console.error(err.message);
+			// 		reject({ success: false });
+			// 	} else {
+			// 		const insertedCount = Object.keys(set).length;
+			// 		console.log(`Inserted ${insertedCount} rows into ${table}`);
+			// 		resolve({ insertedCount, success: true });
+			// 	}
+			// });
 		});
 
-	const readAllRows = (sql, rowCallback) =>
-		db.all(sql, (err, rows) => {
-			if (err) {
-				return console.error(e.message);
+	const insertMany = ({ table, set }) =>
+		new Promise((resolve, reject) => {
+			const isArr = Array.isArray(set);
+			let insertedCount = 0;
+			if (!isArr) {
+				reject({
+					success: false,
+					message: "Set input is not an array",
+				});
+			} else {
+				try {
+					set.forEach(async (s) => {
+						await insertOne({
+							table,
+							set: s,
+							options: { suppressLog: true },
+						});
+						insertedCount++;
+						if (insertedCount === set.length) {
+							console.log(
+								`Inserted ${insertedCount} rows into ${table}`
+							);
+							resolve({ success: true, insertedCount });
+						}
+					});
+				} catch (e) {
+					reject({ success: false, insertedCount });
+				}
 			}
-
-			const result = rowCallback
-				? rows.forEach((row) => rowCallback(row))
-				: rows;
-
-			return result;
 		});
 
-	const upsertRows = ({ table, set, where }) => {
-		const updateSql = `
-            UPDATE ${table}
-            SET ${Object.keys(set).reduce((prev, s) => prev + s + ", ", "")}
-            WHERE ${where.key + "=" + where.val}
-        `;
+	// const insertMany = ({table, setArr}) => new Promise((resolve, reject) => {
 
-		const keys = Object.keys(set); //.reduce((prev, k) => prev + k + ", ");
-		const vals = Object.values(set); //.map((prev, v) => prev + v + ", ");
+	// })
 
-		const keyString = keys.reduce((prev, k) => prev + k + ", ", "");
-		const valString = vals.reduce((prev, v) => prev + v + ", ", "");
+	const updateOne = ({ table, set, condition }) =>
+		new Promise((resolve, reject) => {
+			const sql = query.update({ table, set, condition });
+			db.run(sql, (e) => {
+				if (e) {
+					console.error(e.message);
+					reject({ success: false });
+				} else {
+					console.log("Updated rows in ", table);
+					resolve({ sucess: true });
+				}
+			});
+		});
 
-		const upsertSql = `
-            INSERT INTO ${table} (${keyString}) VALUES (${valString})
-            ON CONFLICT("id") DO UPDATE SET ${keys
-				.filter((k) => k !== "id")
-				.map((k) => k + "=excluded." + k)
-				.reduce((prev, k) => prev + k + ", ", "")}
-        `;
+	const upsertOne = ({ table, set, conflictKey }) =>
+		new Promise((resolve, reject) => {
+			const sql = query.upsert({ table, set, conflictKey });
+			console.log(sql);
+			db.run(sql, (e) => {
+				if (e) {
+					console.error(e.message);
+					reject({ success: false });
+				} else {
+					console.log(`Upserted rows in "${table}"`);
+					resolve({ success: true });
+				}
+			});
+		});
 
-		const result = run(upsertSql);
-		//close();
+	const deleteRows = ({ table, condition }) =>
+		new Promise((resolve, reject) => {
+			const sql = query.deleteRows({ table, condition });
+			console.log(sql);
+			db.run(sql, (e) => {
+				if (e) {
+					console.error(e);
+					reject({ success: false });
+				} else {
+					console.log("Deleted row(s) from ", table);
+					resolve({ success: true });
+				}
+			});
+		});
 
-		return result;
-	};
+	const makeTable = ({ table, schema }) =>
+		new Promise((resolve, reject) => {
+			const sql = query.createTable({ table, schema });
+			db.run(sql, (err) => {
+				if (err) {
+					console.error(err.message);
+					reject({ success: false });
+				} else {
+					console.log(`created table: ${table}`);
+					resolve({ success: true });
+				}
+			});
+		});
 
-	// const arrayJoin = (arr, separator, callback) =>
-	// 	arr.reduce((acc, item, counter) => {
-	// 		if (counter === arr.length - 1) {
-	// 			return callback ? acc + callback(item) : acc + item;
-	// 		} else {
-	// 			return callback
-	// 				? acc + callback(item) + separator
-	// 				: acc + item + separator;
-	// 		}
-	// 	}, "");
-
-	// const quotify = (value) => {
-	// 	if (typeof value !== "string") {
-	// 		return value;
-	// 	} else {
-	// 		return `"${value}"`;
-	// 	}
-	// };
-
-	const insertRow = ({ table, set }) => {
-		const keys = Object.keys(set);
-		const vals = Object.values(set);
-		// const keyString = keys.reduce((prev, k, counter) => {
-		// 	if (counter === keys.length - 1) {
-		// 		return prev + k;
-		// 	} else {
-		// 		return prev + k + sep;
-		// 	}
-		// }, "");
-
-		const keyString = arrayJoin(keys, separator);
-		const valString = arrayJoin(vals, separator, quotify);
-
-		// const valString = vals.reduce(
-		// 	(prev, v, counter) =>
-		// 		`${prev} ${typeof v !== "string" ? v : '"' + v + '"'}, `,
-		// 	""
-		// );
-
-		const sql = `INSERT INTO ${table} (${keyString}) VALUES (${valString});`;
-		console.log(sql);
-		run(sql);
-	};
-
-	const initTable = (tableName, columnSchemaStr) => {
-		const sql = `
-            CREATE TABLE IF NOT EXISTS ${tableName}(
-                ${columnSchemaStr}
-            );`;
-
-		const result = run(sql);
-		return result;
-	};
-
-	const dropTable = (table) => {
-		run(`DROP TABLE IF EXISTS ${table}`);
-		console.log("Dropped table");
-	};
+	const dropTable = (table) =>
+		new Promise((resolve, reject) => {
+			const sql = query.dropTable({ table });
+			db.run(sql, (err) => {
+				if (err) {
+					console.error(err.message);
+					reject({ success: false });
+				} else {
+					console.log(`Dropped table: ${table}`);
+					resolve({ success: true });
+				}
+			});
+		});
 
 	return {
-		initTable,
-		readAllRows,
-		readOneRow,
-		upsertRows,
-		insertRow,
+		makeTable,
 		dropTable,
+		getOne,
+		getMany,
+		insertOne,
+		insertMany,
+		updateOne,
+		upsertOne,
+		deleteRows,
 		close,
 	};
 };
