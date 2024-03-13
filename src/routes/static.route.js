@@ -7,10 +7,6 @@ const __dirname = import.meta.dirname;
 
 staticRouter.use(express.static(path.join(__dirname, "public")));
 
-// staticRouter.get("/config", (req, res) => {
-// 	return res.redirect("/config.html");
-// });
-
 staticRouter.get("/:fileName?", (req, res) => {
 	const { fileName } = req.params;
 	const hasHtmlExtension = fileName.slice(-5) === ".html";
@@ -23,16 +19,16 @@ staticRouter.get("/:fileName?", (req, res) => {
 		)
 	);
 
-	console.log({ fileName, fileExists });
+	//console.log({ fileName, fileExists });
 
 	if (!hasHtmlExtension && fileExists) {
-		console.log("missing .html extension, but file exists");
+		//console.log("missing .html extension, but file exists");
 		return res.redirect(`/${fileName}.html`);
 	} else if (!fileName || !fileExists) {
-		console.log("No filename provided or filename doesn't exist");
+		//console.log("No filename provided or filename doesn't exist");
 		return res.redirect("/index.html");
 	} else {
-		console.log("else fall through");
+		//console.log("else fall through");
 		return res.redirect("/index.html");
 	}
 });

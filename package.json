@@ -6,7 +6,9 @@
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node --watch ./src/index.js"
+		"start": "node --watch ./src/index.js",
+		"start-verbose": "node --watch --trace-warnings ./src/index.js",
+		"start-tw": "npx tailwindcss -i ./src/input.css -o ./src/public/output.css --watch"
 	},
 	"author": "",
 	"license": "ISC",

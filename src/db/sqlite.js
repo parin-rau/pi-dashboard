@@ -7,9 +7,6 @@ const filename = path.join(__dirname, "app.db");
 
 sqlite3.verbose();
 
-// const promisify = (action) =>
-// 	new Promise((resolve, reject) => action(resolve, reject));
-
 export const openDb = async () => {
 	const db = new sqlite3.Database(filename, (e) => {
 		if (e) {
@@ -36,13 +33,16 @@ export const openDb = async () => {
 		new Promise((resolve, reject) => {
 			const sql = query.select({ table, condition, columns });
 
-			db.get(sql, (err, row) => {
+			db.get(sql, (err, data) => {
 				if (err) {
 					console.error(err.message);
 					reject({ success: false });
 				} else {
-					console.log(`Found row matching conditions in "${table}"`);
-					resolve({ row, success: true });
+					data &&
+						console.log(
+							`Found row matching conditions in "${table}"`
+						);
+					resolve({ data, success: true });
 				}
 			});
 		});
@@ -51,7 +51,7 @@ export const openDb = async () => {
 		new Promise((resolve, reject) => {
 			const sql = query.select({ table, condition, columns });
 
-			db.all(sql, (err, rows) => {
+			db.all(sql, (err, data) => {
 				if (err) {
 					console.error(err.message);
 					reject({ success: false });
@@ -60,7 +60,7 @@ export const openDb = async () => {
 					console.log(
 						`Found ${foundCount} matching rows in "${table}"`
 					);
-					resolve({ rows, foundCount, success: true });
+					resolve({ data, foundCount, success: true });
 				}
 			});
 		});
@@ -70,26 +70,7 @@ export const openDb = async () => {
 		new Promise((resolve, reject) => {
 			const isArr = Array.isArray(set);
 
-			// console.log({ set, keys: !isArr ? Object.keys(set) : false });
-			// console.log([isArr]);
 			if (isArr) {
-				// let insertedCount = 0;
-				// set.forEach(async (s) => {
-				// 	return new Promise((resolve, reject) => {
-				// 		const sql = query.insert({ table, set: s });
-				// 		db.run(sql, (err) => {
-				// 			if (err) {
-				// 				console.error(err.message);
-				// 				reject({ success: false });
-				// 			} else {
-				// 				console.log(
-				// 					`Inserted ${insertedCount} rows into ${table}`
-				// 				);
-				// 				resolve({ insertedCount, success: true });
-				// 			}
-				// 		});
-				// 	});
-				// });
 				reject({
 					success: false,
 					insertedCount: 0,
@@ -108,18 +89,6 @@ export const openDb = async () => {
 					}
 				});
 			}
-
-			// const sql = query.insert({ table, set });
-			// db.run(sql, (err) => {
-			// 	if (err) {
-			// 		console.error(err.message);
-			// 		reject({ success: false });
-			// 	} else {
-			// 		const insertedCount = Object.keys(set).length;
-			// 		console.log(`Inserted ${insertedCount} rows into ${table}`);
-			// 		resolve({ insertedCount, success: true });
-			// 	}
-			// });
 		});
 
 	const insertMany = ({ table, set }) =>
@@ -152,10 +121,6 @@ export const openDb = async () => {
 				}
 			}
 		});
-
-	// const insertMany = ({table, setArr}) => new Promise((resolve, reject) => {
-
-	// })
 
 	const updateOne = ({ table, set, condition }) =>
 		new Promise((resolve, reject) => {
@@ -209,7 +174,7 @@ export const openDb = async () => {
 					console.error(err.message);
 					reject({ success: false });
 				} else {
-					console.log(`created table: ${table}`);
+					console.log(`Found/created table: ${table}`);
 					resolve({ success: true });
 				}
 			});

@@ -1,7 +1,7 @@
 import express from "express";
-import * as weather from "../controllers/weather.controller.js";
+import * as controller from "../controllers/weather.controller.js";
 
 export const weatherRouter = express.Router();
 
-weatherRouter.get("/", weather.getWeather);
-weatherRouter.get("/log", weather.logWeather);
+weatherRouter.get("/", controller.getWeather);
+//weatherRouter.get("/log", weather.logWeather);

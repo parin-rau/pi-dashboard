@@ -35,9 +35,12 @@ export const quotify = (value) => {
 export const joinStr = (strArr, separator) => strArr.join(separator);
 
 export const toSelectString = (columns) => {
-	if (columns && columns.length > 0) {
+	if (columns && Array.isArray(columns) && columns.length > 0) {
 		return columns.join(", ");
-	} else {
+	} else if (columns && typeof columns === "string") {
+		return columns;
+	}
+	{
 		return "*";
 	}
 };

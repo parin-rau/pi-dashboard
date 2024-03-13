@@ -14,6 +14,7 @@
 				action="/data/location"
 				method="post"
 			>
+				<h1 class="font-bold text-2xl">App Settings</h1>
 				<div class="flex flex-col gap-2">
 					<label for="location"
 						>Location for weather fetching and timezone</label
@@ -26,14 +27,34 @@
 				</div>
 
 				<div class="flex flex-col gap-2">
+					<label for="locationiq_api_key">LocationIQ API Key</label>
+					<input
+						name="locationiq_api_key"
+						class=""
+						placeholder="Enter API key"
+						required
+					/>
+				</div>
+
+				<div class="flex flex-col gap-2">
+					<label for="port">Server Port for App</label>
+					<input class="" placeholder="Enter port number" />
+				</div>
+
+				<div class="flex gap-2">
 					<input name="darkmode" type="checkbox" />
 					<label for="darkmode">Dark Mode</label>
 				</div>
 
-				<button type="submit">Submit</button>
+				<button
+					class="px-4 py-3 w-fit rounded-md text-slate-100 bg-blue-600"
+					type="submit"
+				>
+					Submit
+				</button>
 			</form>
 
-			<a>Download WeatherIcons Database</a>
+			<!-- <a>Download WeatherIcons Database</a> -->
 		</div>
 	</body>
 </html>

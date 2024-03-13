@@ -50,23 +50,29 @@ const testSchema = `
 // 	condition: { timeOfDay: "night" },
 // });
 
-const testSet = {
-	port: 8080,
-};
+// const testSet = {
+// 	port: 8080,
+// };
 
-const testSet2 = [
-	{
-		port: 200,
-	},
-	{ port: 3000 },
-];
+// const testSet2 = [
+// 	{
+// 		port: 200,
+// 	},
+// 	{ port: 3000 },
+// ];
 
-const testSet3 = [{ port: 45 }, { port: 36 }, { port: 111 }];
+// const testSet3 = [{ port: 45 }, { port: 36 }, { port: 111 }];
 
-const updateInput1 = { table, set: { port: 999 }, condition: { port: 36 } };
-const upsertInput = { table, set: { id: 4, port: 32 }, conflictKey: "id" };
+// const updateInput1 = { table, set: { port: 999 }, condition: { port: 36 } };
+// const upsertInput = { table, set: { id: 4, port: 32 }, conflictKey: "id" };
 
-const iTable = await makeTable({ table: "test", schema: testSchema });
+// const iTable = await makeTable({ table: "test", schema: testSchema });
+
+// const createSettingsTable = await makeTable({
+// 	table: "settings",
+// 	schema: settingsSchema,
+// });
+// const settings = await getOne({ table: "settings" });
 
 // const one = await insert({ table, set: testSet });
 // const multiple = await insertMany({ table, set: testSet2 });
@@ -82,8 +88,11 @@ const iTable = await makeTable({ table: "test", schema: testSchema });
 
 //const insert = await insertMany({ table: "test", set: testSet3 });
 //const update = await updateOne(updateInput1);
-const upsert = await upsertOne(upsertInput);
+//const upsert = await upsertOne(upsertInput);
 
-console.log({ iTable, upsert });
+//console.log({ iTable, upsert });)
+
+await dropTable("undefined");
+await dropTable("settings");
 
 await close();

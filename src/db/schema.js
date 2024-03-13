@@ -3,7 +3,7 @@ export const settingsSchema = `
     port INTEGER,
     lat REAL,
     lon REAL,
-    location TEXT
+    location TEXT,
     locationiq_api_key TEXT,
     darkmode INTEGER
 `;
