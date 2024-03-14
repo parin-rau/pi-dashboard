@@ -27,10 +27,10 @@ app.use("/system", systemRouter);
 
 app.listen(port, async () => {
 	console.log(`App listening on ${getDeviceIp()}:${port}`);
-	runLocalScript(
-		"bash",
-		path.join(__dirname, "..", "..", "scripts", "open-dashboard-app")
-	);
+	// runLocalScript(
+	// 	"bash",
+	// 	path.join(__dirname, "..", "..", "scripts", "open-dashboard-app")
+	// );
 	// const publicIp = await getPublicIp();
 	// console.log(publicIp);
 });
