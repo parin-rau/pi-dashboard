@@ -138,7 +138,7 @@ export const getData = (() => {
 
 					// const iconId = `${child.id}-icon`
 					// const tempId = `${child.id}-temp`
-					// const windId = `${child.id}-wind`
+					//const windId = `${child.id}-wind`;
 					// const descId = `${child.id}-desc`
 
 					const name = getChildEl(child.id, "name");
@@ -154,7 +154,7 @@ export const getData = (() => {
 						srcDirectory,
 					});
 					temp.innerText = `${d.temperature}\xB0${d.temperatureUnit}`;
-					//wind.innerText = `${d.windSpeed} ${d.windDirection}`;
+					//wind.innerText = `${d.windSpeed}\n${d.windDirection}`;
 					//desc.innerText = d.shortForecast;
 				}
 				//elArr.push(document.getElementById())
@@ -217,18 +217,18 @@ export const getTime = (() => {
 	const timeEl = document.getElementById("time");
 	const timeOptions = {
 		weekday: "short",
-		year: "numeric",
-		month: "numeric",
-		day: "numeric",
-		hour: "2-digit",
-		minute: "2-digit",
-		//second: "2-digit",
+		month: "2-digit",
+		day: "2-digit",
+		year: "2-digit",
+		hour: "numeric",
+		minute: "numeric",
+		hour12: false,
 	};
 
 	const clock = (updateInterval) => {
 		const d = new Date();
 
-		timeEl.innerText = d.toLocaleString([], timeOptions);
+		timeEl.innerText = d.toLocaleString("en-US", timeOptions);
 		setInterval(clock, updateInterval * 1000);
 	};
 
