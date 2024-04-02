@@ -1,6 +1,14 @@
 import { openDb } from "../db/sqlite.js";
 import { settingsSchema } from "../db/schema.js";
 
+// const isSingleKeyObj = (data) => {
+// 	if (typeof data !== "object") return data;
+// 	const k = Object.keys(data);
+// 	if (k.length === 1) {
+// 		return data[k[0]];
+// 	}
+// };
+
 export const readSettings = async (fields = null) => {
 	const { close, getOne, makeTable } = await openDb();
 	try {
@@ -16,6 +24,7 @@ export const readSettings = async (fields = null) => {
 
 		await close();
 
+		//return isSingleKeyObj(data);
 		return data;
 	} catch (e) {
 		console.error(e);
@@ -42,5 +51,6 @@ export const writeSettings = async (set) => {
 	} catch (e) {
 		console.error(e);
 		await close();
+		return { success: false };
 	}
 };

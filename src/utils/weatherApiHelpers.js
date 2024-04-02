@@ -10,6 +10,7 @@ export const reducedWeatherInfo = (p) => ({
 	windDirection: p.windDirection,
 	shortForecast: p.shortForecast,
 	icon: p.icon,
+	isDaytime: p.isDaytime,
 });
 
 const extractIconInfo = (forecasts) =>

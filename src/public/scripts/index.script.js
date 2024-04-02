@@ -1,16 +1,16 @@
-import { getData, getTime } from "./utils.js";
+import { getData, getTime, refreshPageTimer } from "./utils.js";
 
-const parent = document.getElementById("content");
-
-// TODO: GET TIME / WEATHER FROM WEATHER API WITH FIXED LOCATION
-// TODO: CHECK FOR LOCATION IN SQLITE ELSE PROMPT FOR CONFIG LOCATION ENTRY
+//const parent = document.getElementById("content");
+const srcDirectory = `./svg`;
 
 getTime.clock(5);
+
+refreshPageTimer(60 * 15);
 
 await getData.updateElement({
 	elementId: "device-ip",
 	url: "/system/ip",
-	dataParser: (address) => address.ip,
+	dataParser: (address) => `IP: ${address.ip}:${address.port}`,
 });
 
 // await getData.createMultipleElements({
@@ -27,10 +27,34 @@ await getData.updateElement({
 // 	},
 // });
 
-await getData.createMultipleElementsSingleSource({
-	parentId: "weather",
+await getData.updateMultipleElementsSingleSource({
 	url: "/api/weather",
 	elementSchemas: [
+		{
+			elementId: "location",
+			dataKey: "location",
+		},
+		{
+			elementId: "current-icon",
+			dataKey: "current",
+			elementType: "svg",
+			srcDirectory,
+		},
+		{
+			elementId: "current-temp",
+			dataKey: "current",
+			dataParser: (d) => `${d.temperature}\xB0${d.temperatureUnit}`,
+		},
+		{
+			elementId: "current-wind",
+			dataKey: "current",
+			dataParser: (d) => `${d.windSpeed} ${d.windDirection}`,
+		},
+		{
+			elementId: "current-desc",
+			dataKey: "current",
+			dataParser: (d) => d.shortForecast,
+		},
 		{
 			elementType: "span",
 			dataKey: "current",
@@ -40,6 +64,10 @@ await getData.createMultipleElementsSingleSource({
 			elementType: "span",
 			dataKey: "upcoming",
 			dataParser: (d) => d.shortForecast,
+		},
+		{
+			elementId: "upcoming",
+			srcDirectory,
 		},
 	],
 });

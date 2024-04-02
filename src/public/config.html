@@ -6,21 +6,27 @@
 		<title>Pi Dashboard Configuration</title>
 		<link rel="shortcut icon" href="#" />
 		<link href="./output.css" rel="stylesheet" />
+		<link href="./manualStyles.css" rel="stylesheet" />
+		<script type="module" async src="/scripts/config.script.js"></script>
 	</head>
-	<body class="bg-neutral-900 text-slate-200">
+
+	<body class="bg-neutral-950 text-neutral-200">
 		<div class="p-10">
 			<form
 				class="flex flex-col gap-10"
-				action="/data/location"
+				action="/system/settings"
 				method="post"
 			>
 				<h1 class="font-bold text-2xl">App Settings</h1>
+
 				<div class="flex flex-col gap-2">
 					<label for="location"
 						>Location for weather fetching and timezone</label
 					>
 					<input
+						class="p-2 text-neutral-800 rounded-md"
 						name="location"
+						id="location"
 						placeholder="Enter location"
 						required
 					/>
@@ -29,8 +35,9 @@
 				<div class="flex flex-col gap-2">
 					<label for="locationiq_api_key">LocationIQ API Key</label>
 					<input
+						class="p-2 text-neutral-800 rounded-md"
 						name="locationiq_api_key"
-						class=""
+						id="locationiq_api_key"
 						placeholder="Enter API key"
 						required
 					/>
@@ -38,16 +45,21 @@
 
 				<div class="flex flex-col gap-2">
 					<label for="port">Server Port for App</label>
-					<input class="" placeholder="Enter port number" />
+					<input
+						class="p-2 text-neutral-800 rounded-md"
+						name="port"
+						id="port"
+						placeholder="Enter port number"
+					/>
 				</div>
 
-				<div class="flex gap-2">
+				<!-- <div class="flex gap-2">
 					<input name="darkmode" type="checkbox" />
 					<label for="darkmode">Dark Mode</label>
-				</div>
+				</div> -->
 
 				<button
-					class="px-4 py-3 w-fit rounded-md text-slate-100 bg-blue-600"
+					class="px-4 py-3 w-fit font-bold rounded-md text-slate-100 bg-blue-600"
 					type="submit"
 				>
 					Submit

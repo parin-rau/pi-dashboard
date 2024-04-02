@@ -9,11 +9,11 @@ export const code = (result) => {
 		}
 	}
 
-	console.log({ data, dataCount });
+	//console.log({ data, dataCount });
 
 	if (data.length > 0 && result.success) {
 		return 200;
-	} else if (!data && result.success) {
+	} else if (result && !result.success && dataCount) {
 		return 404;
 	} else {
 		return 400;

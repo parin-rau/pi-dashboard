@@ -1,3 +1,5 @@
+import { parseIconSrc } from "./weatherHelpers.js";
+
 const okException = (res) => [400, 404].includes(res.status);
 
 export const getData = (() => {
@@ -69,31 +71,112 @@ export const getData = (() => {
 		}
 	};
 
-	const createMultipleElementsSingleSource = async ({
-		parentId,
+	const updateMultipleElementsSingleSource = async ({
+		//parentId,
 		url,
 		elementSchemas,
 	}) => {
-		const parentEl = document.getElementById(parentId);
-		if (!Array.isArray(elementSchemas))
-			return (parentEl.innerText = `Need to provide multiple element schemas`);
+		//const parentEl = document.getElementById(parentId);
+		//if (!Array.isArray(elementSchemas))
+		//return (parentEl.innerText = `Need to provide multiple element schemas`);
 
 		const res = await fetch(url);
 		if (!res.ok && !okException(res))
-			return (parentEl.innerText = `Bad response trying to get data from ${url}`);
+			return console.log(`Bad response trying to get data from ${url}`);
 
 		const data = await res.json();
+		console.log({ data });
 		elementSchemas.forEach((e) => {
-			const { elementType, dataKey, dataParser, order } = e;
+			const {
+				elementId,
+				elementType,
+				dataKey,
+				dataParser,
+				classes,
+				order,
+			} = e;
 			const elData = data[dataKey];
 
-			elData.forEach((d) => {
-				const el = document.createElement(elementType);
+			if (elementId === "upcoming" && data.upcoming) {
+				const containerEl = document.getElementById("upcoming");
+
+				const getChildEl = (id, suffix) =>
+					document.getElementById(`${id}-${suffix}`);
+
+				const { srcDirectory } = e;
+
+				//console.log(containerEl);
+				//console.log(containerEl.children);
+				for (const child of containerEl.children) {
+					const count = child.id.split("-")[1];
+					const d = data.upcoming[count];
+
+					// const iconId = `${child.id}-icon`
+					// const tempId = `${child.id}-temp`
+					// const windId = `${child.id}-wind`
+					// const descId = `${child.id}-desc`
+
+					const name = getChildEl(child.id, "name");
+					const icon = getChildEl(child.id, "icon");
+					const temp = getChildEl(child.id, "temp");
+					const wind = getChildEl(child.id, "wind");
+					const desc = getChildEl(child.id, "desc");
+
+					name.innerText = d.name;
+					icon.src = parseIconSrc({
+						isDaytime: d.isDaytime,
+						shortForecast: d.shortForecast,
+						srcDirectory,
+					});
+					temp.innerText = `${d.temperature}\xB0${d.temperatureUnit}`;
+					wind.innerText = `${d.windSpeed} ${d.windDirection}`;
+					desc.innerText = d.shortForecast;
+				}
+				//elArr.push(document.getElementById())
+			} else if (!elData) {
+				return console.log(
+					`"${dataKey}" data not received. Check app settings at /config`
+				);
+			} else if (elData && elementType) {
+				if (elementType === "svg") {
+					const { srcDirectory } = e;
+					const { isDaytime, shortForecast } = elData;
+					const el = document.getElementById(elementId);
+					el.src = parseIconSrc({
+						isDaytime,
+						shortForecast,
+						srcDirectory,
+					});
+
+					// const el2 = document.createElement("svg");
+					// el2.href = parseIconSrc({
+					// 	isDaytime,
+					// 	shortForecast,
+					// 	srcDirectory,
+					// });
+
+					// const el3 = document.createElement("p");
+					// el3.innerText = el2.src;
+
+					// const parentEl = el.parentElement.parentElement;
+					// parentEl.appendChild(el2);
+					// parentEl.appendChild(el3);
+				}
+			} else if (Array.isArray(elData)) {
+				elData.forEach((d) => {
+					const el = document.getElementById(elementId);
+					el.innerText =
+						(dataParser ? dataParser(d) : d) ??
+						`Something went wrong trying to get "${elData}" from ${url}`;
+					//parentEl.appendChild(el);
+				});
+			} else {
+				const el = document.getElementById(elementId);
 				el.innerText =
-					(dataParser ? dataParser(d) : d) ??
-					`Something went wrong trying to get data from ${url}`;
-				parentEl.appendChild(el);
-			});
+					(dataParser ? dataParser(elData) : elData) ??
+					`Something went wrong trying to get ${elData} from ${url}`;
+				//parentEl.appendChild(el);
+			}
 		});
 	};
 
@@ -101,7 +184,7 @@ export const getData = (() => {
 		createElement,
 		updateElement,
 		createMultipleElements,
-		createMultipleElementsSingleSource,
+		updateMultipleElementsSingleSource,
 	};
 })();
 
@@ -126,3 +209,20 @@ export const getTime = (() => {
 
 	return { clock };
 })();
+
+export const refreshPageTimer = (updateInterval) => {
+	setInterval(() => window.location.reload(), updateInterval * 1000);
+};
+
+export const populateForm = async ({ url, inputIds }) => {
+	const res = await fetch(url);
+
+	if (!res.ok && !okException(res)) {
+		return console.log(`Unable to fetch form data from ${url}`);
+	}
+
+	const data = await res.json();
+	inputIds.forEach((id) => {
+		document.getElementById(id).value = data[id] ?? "";
+	});
+};

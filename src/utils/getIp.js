@@ -11,8 +11,8 @@ export function getDeviceIp() {
 
 			if (
 				address[0] === "192" &&
-				address[1] === "168" &&
-				address[2] === "1"
+				address[1] === "168"
+				//&& address[2] === "1"
 			) {
 				return address.join(".").toString();
 			}

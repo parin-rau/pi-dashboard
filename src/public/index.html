@@ -5,19 +5,123 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Pi Dashboard</title>
 		<link rel="shortcut icon" href="#" />
-		<link href="./output.css" rel="stylesheet" />
+		<link href="/output.css" rel="stylesheet" />
+		<link href="/manualStyles.css" rel="stylesheet" />
 		<script type="module" async src="/scripts/index.script.js"></script>
 	</head>
 
-	<body class="bg-neutral-900 text-slate-200">
-		<div class="p-10 flex flex-col gap-10">
-			<h2 class="font-bold text-2xl">Hello world</h2>
-			<div id="content" class="flex flex-col gap-2">
-				<p>This is a static page from the server</p>
-				<span id="time"></span>
-				<span id="device-ip"></span>
-				<span id="weather"></span>
-				<span id="calendar"></span>
+	<!-- <script
+		type="text/javascript"
+		src="https://unpkg.com/external-svg-loader@latest/svg-loader.min.js"
+		async
+	></script> -->
+
+	<body class="bg-neutral-950 text-neutral-200">
+		<div class="p-2 flex flex-col gap-2 h-screen">
+			<div class="grid grid-cols-2 gap-2">
+				<div
+					class="px-2 py-1 rounded-md border-2 border-neutral-700 flex justify-between"
+				>
+					<span id="time"></span
+					><span id="location" class="font-semibold"></span>
+				</div>
+				<span
+					id="device-ip"
+					class="px-2 py-1 rounded-md border-2 border-neutral-700"
+				></span>
+			</div>
+
+			<div class="grid grid-cols-2 gap-2 h-full">
+				<div
+					id="weather"
+					class="grid grid-rows-2 grid-cols-1 p-1 rounded-md border-2 border-neutral-700"
+				>
+					<div id="current" class="flex flex-col gap-4 items-center">
+						<span id="current-name" class="font-semibold text-lg"
+							>Current</span
+						>
+						<div class="h-20 w-20">
+							<img
+								id="current-icon"
+								class="fill-current h-full"
+							/>
+						</div>
+						<div class="flex flex-col gap-2 items-center">
+							<span id="current-desc"></span>
+							<span id="current-temp"></span>
+							<span id="current-wind"></span>
+						</div>
+					</div>
+
+					<div id="upcoming" class="grid grid-cols-3">
+						<div
+							id="upcoming-0"
+							class="flex flex-col gap-4 items-center"
+						>
+							<span
+								id="upcoming-0-name"
+								class="font-semibold text-lg"
+							></span>
+							<div class="h-20 w-20">
+								<img
+									id="upcoming-0-icon"
+									class="fill-current h-full"
+								/>
+							</div>
+							<div class="flex flex-col gap-2 items-center">
+								<span id="upcoming-0-desc"></span
+								><span id="upcoming-0-temp"></span>
+								<span id="upcoming-0-wind"></span>
+							</div>
+						</div>
+
+						<div
+							id="upcoming-1"
+							class="flex flex-col gap-4 items-center"
+						>
+							<span
+								id="upcoming-1-name"
+								class="font-semibold text-lg"
+							></span>
+							<div class="h-20 w-20">
+								<img
+									id="upcoming-1-icon"
+									class="fill-current h-full"
+								/>
+							</div>
+							<div class="flex flex-col gap-2 items-center">
+								<span id="upcoming-1-desc"></span>
+								<span id="upcoming-1-temp"></span>
+								<span id="upcoming-1-wind"></span>
+							</div>
+						</div>
+
+						<div
+							id="upcoming-2"
+							class="flex flex-col gap-4 items-center"
+						>
+							<span
+								id="upcoming-2-name"
+								class="font-semibold text-lg"
+							></span>
+							<div class="h-20 w-20">
+								<img
+									id="upcoming-2-icon"
+									class="fill-current h-full"
+								/>
+							</div>
+							<div class="flex flex-col gap-2 items-center">
+								<span id="upcoming-2-desc"></span>
+								<span id="upcoming-2-temp"></span>
+								<span id="upcoming-2-wind"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div
+					id="calendar"
+					class="p-1 rounded-md border-2 border-neutral-700"
+				></div>
 			</div>
 		</div>
 	</body>

@@ -11,6 +11,6 @@ export const runLocalScript = (command, filepath) => {
 	}
 
 	const result = exec(`${command} ${filepath}`);
-	console.log(`Running script on locally on server machine: ${filepath}`);
+	console.log(`Running script locally on server machine: ${filepath}`);
 	return result;
 };

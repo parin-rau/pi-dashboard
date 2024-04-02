@@ -139,7 +139,7 @@ export const openDb = async () => {
 	const upsertOne = ({ table, set, conflictKey }) =>
 		new Promise((resolve, reject) => {
 			const sql = query.upsert({ table, set, conflictKey });
-			console.log(sql);
+			//console.log(sql);
 			db.run(sql, (e) => {
 				if (e) {
 					console.error(e.message);
@@ -154,7 +154,7 @@ export const openDb = async () => {
 	const deleteRows = ({ table, condition }) =>
 		new Promise((resolve, reject) => {
 			const sql = query.deleteRows({ table, condition });
-			console.log(sql);
+			//console.log(sql);
 			db.run(sql, (e) => {
 				if (e) {
 					console.error(e);

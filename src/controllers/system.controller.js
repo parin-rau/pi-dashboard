@@ -1,22 +1,39 @@
-import { exec, execSync } from "child_process";
+import * as model from "../models/system.model.js";
+import { port } from "../index.js";
+import { exec } from "child_process";
 import { getDeviceIp } from "../utils/getIp.js";
+import { code } from "../utils/status.js";
 
-export function hello(req, res) {
-	res.send("Hi mom!");
+// export function hello(req, res) {
+// 	res.send("Hi mom!");
+// }
+
+export async function readConfig(req, res) {
+	const data = await model.readConfig();
+	res.status(code(data)).send(data);
 }
 
-export function getSettings(req, res) {
-	res.send("reading settings");
-}
+export async function postConfig(req, res) {
+	const { location, locationiq_api_key, port } = await req.body;
+	//console.log({ location, locationiq_api_key, port });
 
-export function setSettings(req, res) {
-	res.send("writing settings");
+	const result = await model.postConfig({
+		location,
+		locationiq_api_key,
+		port,
+	});
+
+	if (!result || !result.success) {
+		res.status(500).redirect("/");
+	} else {
+		res.redirect("/"); //.send("writing settings")}
+	}
 }
 
 export function getIp(req, res) {
 	const deviceIp = getDeviceIp() ?? "Can't get server IP address";
 	console.log(deviceIp);
-	res.send({ ip: deviceIp });
+	res.send({ ip: deviceIp, port: port });
 }
 
 export function reboot(req, res) {

@@ -2,23 +2,20 @@ import {
 	reducedWeatherInfo,
 	writeWeatherIconInfo,
 } from "../utils/weatherApiHelpers.js";
-//import { getDeviceIp } from "../utils/getIp.js";
-//import { defaultPort } from "../index.js";
-//import { getSettings, writeSettings } from "../utils/settingsApiHelpers.js";
 import { getCoords } from "../utils/geolocation.js";
 
 const weatherApi = "https://api.weather.gov";
 
-export const getForecast = async () => {
-	//const coords = { lat: "37.7792588", lon: "-122.4193286" };
-	//TODO: change coords to be result of db select call
+export const getForecast = async (
+	{ saveIconInfo } = { saveIconInfo: false }
+) => {
 	try {
 		const coordsResult = await getCoords();
 
 		if (!coordsResult.coords) {
 			return { success: false, weather: undefined };
 		}
-		const { lat, lon } = coordsResult.coords;
+		const { lat, lon, location } = coordsResult.coords;
 
 		const summaryRes = await fetch(`${weatherApi}/points/${lat},${lon}`);
 
@@ -33,7 +30,6 @@ export const getForecast = async () => {
 				const forecastHourlyData = await forecastHourlyRes.json();
 
 				const currentWeather = forecastHourlyData.properties.periods[0];
-				//const trimmedCurrentWeather = reducedWeatherInfo(currentWeather);
 
 				const { periods } = forecastData.properties;
 				const upcoming = periods
@@ -41,14 +37,19 @@ export const getForecast = async () => {
 					.map((p) => reducedWeatherInfo(p));
 
 				const current = reducedWeatherInfo(currentWeather);
+				if (saveIconInfo === true)
+					await writeWeatherIconInfo([current, ...upcoming]);
 
-				await writeWeatherIconInfo([current, ...upcoming]);
-
-				return { current, upcoming, success: true };
+				return { current, upcoming, location, success: true };
 			}
 		}
 	} catch (e) {
 		console.error(e);
-		return { success: false, weather: undefined };
+		return {
+			success: false,
+			current: undefined,
+			upcoming: undefined,
+			location: undefined,
+		};
 	}
 };
