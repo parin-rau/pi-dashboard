@@ -10,7 +10,7 @@ refreshPageTimer(60 * 15);
 await getData.updateElement({
 	elementId: "device-ip",
 	url: "/system/ip",
-	dataParser: (address) => `IP: ${address.ip}:${address.port}`,
+	dataParser: (address) => `${address.ip}:${address.port}`,
 });
 
 // await getData.createMultipleElements({

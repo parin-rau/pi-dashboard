@@ -2,6 +2,31 @@ import { parseIconSrc } from "./weatherHelpers.js";
 
 const okException = (res) => [400, 404].includes(res.status);
 
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+const shortenDay = (day) => {
+	switch (day) {
+		case "Sunday":
+			return "Sun";
+		case "Monday":
+			return "Mon";
+		case "Tuesday":
+			return "Tue";
+		case "Wednesday":
+			return "Wed";
+		case "Thursday":
+			return "Thu";
+		case "Friday":
+			return "Fri";
+		case "Saturday":
+			return "Sat";
+		default: {
+			const d = new Date();
+			return days[d.getDay()];
+		}
+	}
+};
+
 export const getData = (() => {
 	const updateElement = async ({ elementId, url, dataParser }) => {
 		const el = document.getElementById(elementId);
@@ -119,18 +144,18 @@ export const getData = (() => {
 					const name = getChildEl(child.id, "name");
 					const icon = getChildEl(child.id, "icon");
 					const temp = getChildEl(child.id, "temp");
-					const wind = getChildEl(child.id, "wind");
-					const desc = getChildEl(child.id, "desc");
+					//const wind = getChildEl(child.id, "wind");
+					//const desc = getChildEl(child.id, "desc");
 
-					name.innerText = d.name;
+					name.innerText = shortenDay(d.name);
 					icon.src = parseIconSrc({
 						isDaytime: d.isDaytime,
 						shortForecast: d.shortForecast,
 						srcDirectory,
 					});
 					temp.innerText = `${d.temperature}\xB0${d.temperatureUnit}`;
-					wind.innerText = `${d.windSpeed} ${d.windDirection}`;
-					desc.innerText = d.shortForecast;
+					//wind.innerText = `${d.windSpeed} ${d.windDirection}`;
+					//desc.innerText = d.shortForecast;
 				}
 				//elArr.push(document.getElementById())
 			} else if (!elData) {
