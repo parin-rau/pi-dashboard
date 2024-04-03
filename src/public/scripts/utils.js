@@ -230,7 +230,7 @@ export const getTime = (() => {
 	// let expected = Date.now() + interval;
 
 	const clock = () => {
-		// const d = new Date();
+		const d = new Date();
 		// const dt = d - expected;
 
 		// if (dt > interval) window.location.reload();
