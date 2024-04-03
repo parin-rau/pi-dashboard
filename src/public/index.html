@@ -10,30 +10,24 @@
 		<script type="module" async src="/scripts/index.script.js"></script>
 	</head>
 
-	<!-- <script
-		type="text/javascript"
-		src="https://unpkg.com/external-svg-loader@latest/svg-loader.min.js"
-		async
-	></script> -->
-
 	<body class="bg-neutral-950 text-neutral-200 text-2xl">
-		<div class="p-1 flex flex-col gap-1 h-[480px] w-[720px]">
+		<div class="p-1 flex flex-col gap-2 h-[480px] w-[720px]">
 			<div class="grid grid-cols-2 gap-2 w-full">
 				<div
-					class="px-2 py-1 rounded-md border border-neutral-700 flex flex-col justify-between"
+					class="px-2 py-1 rounded-md border-2 border-neutral-700 flex flex-col justify-between"
 				>
 					<span id="time"></span>
 				</div>
 				<span
 					id="device-ip"
-					class="px-2 py-1 rounded-md border border-neutral-700"
+					class="px-2 py-1 rounded-md border-2 border-neutral-700"
 				></span>
 			</div>
 
 			<div class="grid grid-cols-2 gap-2 h-full w-full">
 				<div
 					id="weather"
-					class="grid grid-rows-2 grid-cols-1 p-1 rounded-md border border-neutral-700 place-items-center"
+					class="grid grid-rows-2 grid-cols-1 p-1 rounded-md border-2 border-neutral-700 place-items-center"
 				>
 					<div
 						id="current"
@@ -54,7 +48,7 @@
 								<span id="current-desc" class="text-xl"></span>
 								<span
 									id="current-temp"
-									class="font-semibold"
+									class="font-bold text-3xl"
 								></span>
 								<span id="current-wind"></span>
 							</div>
@@ -126,9 +120,10 @@
 						</div>
 					</div>
 				</div>
+
 				<div
 					id="calendar"
-					class="p-1 rounded-md border border-neutral-700"
+					class="p-1 rounded-md border-2 border-neutral-700"
 				></div>
 			</div>
 		</div>

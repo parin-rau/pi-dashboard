@@ -222,14 +222,24 @@ export const getTime = (() => {
 		year: "2-digit",
 		hour: "numeric",
 		minute: "numeric",
-		hour12: false,
+		//second: "numeric",
+		hour12: true,
 	};
 
-	const clock = (updateInterval) => {
+	const interval = 60 * 1000;
+	let expected = Date.now() + interval;
+
+	const clock = () => {
 		const d = new Date();
+		const dt = d - expected;
+
+		if (dt > interval) window.location.reload();
 
 		timeEl.innerText = d.toLocaleString("en-US", timeOptions);
 		//setInterval(clock, updateInterval * 1000);
+
+		expected += interval;
+		setTimeout(clock, Math.max(0, interval - dt));
 	};
 
 	return { clock };
