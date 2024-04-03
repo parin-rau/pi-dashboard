@@ -146,7 +146,7 @@ export const getData = (() => {
 
 					// const iconId = `${child.id}-icon`
 					// const tempId = `${child.id}-temp`
-					//const windId = `${child.id}-wind`;
+					// const windId = `${child.id}-wind`;
 					// const descId = `${child.id}-desc`
 
 					const name = getChildEl(child.id, "name");
@@ -162,7 +162,7 @@ export const getData = (() => {
 						srcDirectory,
 					});
 					temp.innerText = `${d.temperature}\xB0${d.temperatureUnit}`;
-					//wind.innerText = `${d.windSpeed}\n${d.windDirection}`;
+					//wind.innerText = d.windSpeed;
 					//desc.innerText = d.shortForecast;
 				}
 				//elArr.push(document.getElementById())

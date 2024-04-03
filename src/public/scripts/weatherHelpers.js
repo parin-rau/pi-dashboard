@@ -7,6 +7,7 @@ export const parseIconSrc = ({ isDaytime, shortForecast: s, srcDirectory }) => {
 			case s === "Mostly Clear":
 				return isDaytime ? "clear-day.svg" : "clear-night.svg";
 			case s === "Partly Cloudy":
+			case s === "Partly Sunny":
 				return isDaytime
 					? "partly-cloudy-day.svg"
 					: "partly-cloudy-night.svg";
