@@ -2,7 +2,7 @@ import { parseIconSrc } from "./weatherHelpers.js";
 
 const okException = (res) => [400, 404].includes(res.status);
 
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+//const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const shortenDay = (day) => {
 	switch (day) {
@@ -21,9 +21,17 @@ const shortenDay = (day) => {
 		case "Saturday":
 			return "Sat";
 		default: {
-			const d = new Date();
-			return days[d.getDay()];
+			if (day.toLowerCase().includes("night")) {
+				return "Tonight";
+			} else {
+				return "Today";
+			}
 		}
+
+		// default: {
+		// 	const d = new Date();
+		// 	return days[d.getDay()];
+		// }
 	}
 };
 
