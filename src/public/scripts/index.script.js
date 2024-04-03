@@ -16,6 +16,17 @@ await getData.updateElement({
 	dataParser: (address) => `${address.ip}:${address.port}`,
 });
 
+await getData.updateElement({
+	elementId: "big-time",
+	dataParser: () => {
+		return new Date().toLocaleTimeString("en-US", {
+			hour: "numeric",
+			minute: "numeric",
+			hour12: true,
+		});
+	},
+});
+
 // await getData.createMultipleElements({
 // 	parentId: "weather",
 // 	elementType: "p",

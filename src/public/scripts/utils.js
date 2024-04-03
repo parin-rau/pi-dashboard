@@ -38,17 +38,21 @@ const shortenDay = (day) => {
 export const getData = (() => {
 	const updateElement = async ({ elementId, url, dataParser }) => {
 		const el = document.getElementById(elementId);
-		const res = await fetch(url);
+		if (url) {
+			const res = await fetch(url);
 
-		if (!res.ok && !okException(res)) {
-			return (el.innerText = `Bad response trying to get data from ${url}`);
+			if (!res.ok && !okException(res)) {
+				return (el.innerText = `Bad response trying to get data from ${url}`);
+			}
+
+			const data = await res.json();
+			//console.log({ data });
+			el.innerText =
+				(dataParser ? dataParser(data) : data) ??
+				`Unable to get data from ${url}`;
+		} else {
+			el.innerText = dataParser();
 		}
-
-		const data = await res.json();
-		//console.log({ data });
-		el.innerText =
-			(dataParser ? dataParser(data) : data) ??
-			`Unable to get data from ${url}`;
 	};
 
 	const createElement = async ({
