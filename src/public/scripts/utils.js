@@ -226,20 +226,20 @@ export const getTime = (() => {
 		hour12: true,
 	};
 
-	const interval = 60 * 1000;
-	let expected = Date.now() + interval;
+	// const interval = 60 * 1000;
+	// let expected = Date.now() + interval;
 
 	const clock = () => {
-		const d = new Date();
-		const dt = d - expected;
+		// const d = new Date();
+		// const dt = d - expected;
 
-		if (dt > interval) window.location.reload();
+		// if (dt > interval) window.location.reload();
 
 		timeEl.innerText = d.toLocaleString("en-US", timeOptions);
 		//setInterval(clock, updateInterval * 1000);
 
-		expected += interval;
-		setTimeout(clock, Math.max(0, interval - dt));
+		// expected += interval;
+		// setTimeout(clock, Math.max(0, interval - dt));
 	};
 
 	return { clock };
