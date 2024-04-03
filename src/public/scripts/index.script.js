@@ -1,11 +1,14 @@
-import { getData, getTime, refreshPageTimer } from "./utils.js";
+import {
+	getData,
+	getTime, //refreshPageTimer
+} from "./utils.js";
 
 //const parent = document.getElementById("content");
 const srcDirectory = `./svg`;
 
-getTime.clock(5);
+getTime.clock();
 
-refreshPageTimer(60 * 15);
+//refreshPageTimer(60 * 15);
 
 await getData.updateElement({
 	elementId: "device-ip",

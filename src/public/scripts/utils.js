@@ -37,7 +37,7 @@ export const getData = (() => {
 		}
 
 		const data = await res.json();
-		console.log({ data });
+		//console.log({ data });
 		el.innerText =
 			(dataParser ? dataParser(data) : data) ??
 			`Unable to get data from ${url}`;
@@ -77,7 +77,7 @@ export const getData = (() => {
 
 		if (res.ok || okException(res)) {
 			const data = await res.json();
-			console.log({ data });
+			//console.log({ data });
 			const arr = data[dataKey];
 
 			if (!Array.isArray(arr)) {
@@ -110,7 +110,7 @@ export const getData = (() => {
 			return console.log(`Bad response trying to get data from ${url}`);
 
 		const data = await res.json();
-		console.log({ data });
+		//console.log({ data });
 		elementSchemas.forEach((e) => {
 			const {
 				elementId,
@@ -229,15 +229,15 @@ export const getTime = (() => {
 		const d = new Date();
 
 		timeEl.innerText = d.toLocaleString("en-US", timeOptions);
-		setInterval(clock, updateInterval * 1000);
+		//setInterval(clock, updateInterval * 1000);
 	};
 
 	return { clock };
 })();
 
-export const refreshPageTimer = (updateInterval) => {
-	setInterval(() => window.location.reload(), updateInterval * 1000);
-};
+// export const refreshPageTimer = (updateInterval) => {
+// 	setInterval(() => window.location.reload(), updateInterval * 1000);
+// };
 
 export const populateForm = async ({ url, inputIds }) => {
 	const res = await fetch(url);
