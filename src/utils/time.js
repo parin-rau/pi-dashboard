@@ -18,8 +18,14 @@ export const getTime = (() => {
 
 	const d = new Date();
 
-	const long = () => d.toLocaleString("en-US", longOptions);
-	const short = () => d.toLocaleString("en-US", shortOptions);
+	const long = () => {
+		const d = new Date();
+		return d.toLocaleString("en-US", longOptions);
+	};
+	const short = () => {
+		const d = new Date();
+		return d.toLocaleString("en-US", shortOptions);
+	};
 
 	return { long, short };
 })();
