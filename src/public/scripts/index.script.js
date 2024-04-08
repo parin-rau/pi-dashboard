@@ -13,7 +13,7 @@ getTime.clock();
 await getData.updateElement({
 	elementId: "device-ip",
 	url: "/system/ip",
-	dataParser: (address) => `${address.ip}:${address.port}`,
+	dataParser: (address) => `${address.ip}`,
 });
 
 await getData.updateElement({

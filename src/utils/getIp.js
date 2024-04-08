@@ -1,4 +1,5 @@
 import os from "os";
+import { port } from "../index.js";
 
 export function getDeviceIp() {
 	const networkInterfaces = os.networkInterfaces();
@@ -14,21 +15,21 @@ export function getDeviceIp() {
 				address[1] === "168"
 				//&& address[2] === "1"
 			) {
-				return address.join(".").toString();
+				return `${address.join(".").toString()}:${port}`;
 			}
 		}
 	}
 }
 
-export async function getPublicIp() {
-	const url = "https://api.ipify.org?format=json";
+// export async function getPublicIp() {
+// 	const url = "https://api.ipify.org?format=json";
 
-	const res = await fetch(url);
-	if (res.ok) {
-		const publicIp = await res.json();
-		return publicIp["ip"];
-	}
-}
+// 	const res = await fetch(url);
+// 	if (res.ok) {
+// 		const publicIp = await res.json();
+// 		return publicIp["ip"];
+// 	}
+// }
 
 // export async function getCoords() {
 // 	const publicIp = await getPublicIp();

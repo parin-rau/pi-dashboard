@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Pi Dashboard</title>
+		<link rel="shortcut icon" href="#" />
+		<link href="/output.css" rel="stylesheet" />
+		<link href="/manualStyles.css" rel="stylesheet" />
+		<!-- <script type="module" async src="/scripts/index.script.js"></script> -->
+	</head>
+
+	<body class="bg-neutral-950 text-neutral-200 text-2xl">
+		<div class="p-1 flex flex-col gap-2 h-screen w-full">
+			<div class="grid grid-cols-2 gap-2 w-full">
+				<div
+					class="px-2 py-1 rounded-md border-2 border-neutral-700 flex flex-col justify-between"
+				>
+					<span id="time"><%= time.long() %></span>
+				</div>
+				<span
+					id="device-ip"
+					class="px-2 py-1 rounded-md border-2 border-neutral-700"
+				>
+					<%= ip %>
+				</span>
+			</div>
+
+			<div class="grid grid-cols-2 gap-2 h-full w-full">
+				<div
+					id="weather"
+					class="grid grid-rows-2 grid-cols-1 p-1 rounded-md border-2 border-neutral-700 place-items-center"
+				>
+					<div
+						id="current"
+						class="p-1 grid grid-cols-1 items-center place-items-center h-fit gap-6"
+					>
+						<span id="location" class="font-semibold"
+							><%= weather.location %></span
+						>
+						<div
+							class="p-0 grid grid-cols-2 gap-4 items-center place-items-center h-fit"
+						>
+							<div class="h-20 w-20">
+								<img
+									id="current-icon"
+									class="fill-current h-full"
+									src="<%= currentIcon %>"
+								/>
+							</div>
+							<div class="flex flex-col items-center gap-2">
+								<!-- <span class="font-semibold">Current</span> -->
+								<span id="current-desc" class="text-xl"></span>
+								<span
+									id="current-temp"
+									class="font-bold text-3xl"
+								>
+									<%=`${weather.current.temperature}\xB0${weather.current.temperatureUnit}`
+									%>
+								</span>
+								<span id="current-wind">
+									<%= `${weather.current.windSpeed}
+									${weather.current.windDirection}` %>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div id="upcoming" class="grid grid-cols-3 w-full">
+						<div
+							id="upcoming-0"
+							class="flex flex-col gap-2 items-center text-center"
+						>
+							<span id="upcoming-0-name" class="font-semibold">
+								<%= upcomingNames[0] %>
+							</span>
+							<div class="h-12 w-12">
+								<img
+									id="upcoming-0-icon"
+									class="fill-current h-full"
+									src="<%= upcomingIcons[0] %>"
+								/>
+							</div>
+							<div class="flex flex-col items-center">
+								<!-- <span id="upcoming-0-desc"></span> -->
+								<span id="upcoming-0-temp">
+									<%=`${weather.upcoming[0].temperature}\xB0${weather.upcoming[0].temperatureUnit}`
+									%>
+								</span>
+								<!-- <span id="upcoming-0-wind"></span> -->
+							</div>
+						</div>
+
+						<div
+							id="upcoming-1"
+							class="flex flex-col gap-2 items-center"
+						>
+							<span id="upcoming-1-name" class="font-semibold"
+								><%= upcomingNames[1] %></span
+							>
+							<div class="h-12 w-12">
+								<img
+									id="upcoming-1-icon"
+									class="fill-current h-full"
+									src="<%= upcomingIcons[1] %>"
+								/>
+							</div>
+							<div class="flex flex-col items-center">
+								<!-- <span id="upcoming-1-desc"></span> -->
+								<span id="upcoming-1-temp">
+									<%=`${weather.upcoming[1].temperature}\xB0${weather.upcoming[1].temperatureUnit}`
+									%>
+								</span>
+								<!-- <span id="upcoming-1-wind"></span> -->
+							</div>
+						</div>
+
+						<div
+							id="upcoming-2"
+							class="flex flex-col gap-2 items-center"
+						>
+							<span id="upcoming-2-name" class="font-semibold">
+								<%= upcomingNames[2] %>
+							</span>
+							<div class="h-12 w-12">
+								<img
+									id="upcoming-2-icon"
+									class="fill-current h-full"
+									src="<%= upcomingIcons[2] %>"
+								/>
+							</div>
+							<div class="flex flex-col items-center">
+								<!-- <span id="upcoming-2-desc"></span> -->
+								<span id="upcoming-2-temp">
+									<%=`${weather.upcoming[2].temperature}\xB0${weather.upcoming[2].temperatureUnit}`
+									%>
+								</span>
+								<!-- <span id="upcoming-2-wind"></span> -->
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					id="calendar"
+					class="p-1 rounded-md border-2 border-neutral-700 grid place-items-center"
+				>
+					<span id="big-time" class="text-6xl font-bold"
+						><%= time.short() %></span
+					>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

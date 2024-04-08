@@ -33,7 +33,7 @@ export async function postConfig(req, res) {
 export function getIp(req, res) {
 	const deviceIp = getDeviceIp() ?? "Can't get server IP address";
 	console.log(deviceIp);
-	res.send({ ip: deviceIp, port: port });
+	res.send({ ip: deviceIp });
 }
 
 export function reboot(req, res) {
