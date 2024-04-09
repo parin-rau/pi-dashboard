@@ -9,7 +9,20 @@ import { readSettings } from "./utils/settingsApiHelpers.js";
 import { runLocalScript } from "./utils/runLocalScript.js";
 
 export const defaultPort = 3000;
-export const port = (await readSettings("port").port) ?? defaultPort;
+
+// const getPort = async () => {
+// 	const defaultPort = 3000;
+// 	try {
+// 		const port = (await readSettings("port").port) ?? defaultPort;
+// 		return port;
+// 	} catch (e) {
+// 		console.error(e);
+// 		writeToLogFile(`${new Date().toISOString()}: ${e}`);
+// 		return defaultPort;
+// 	}
+// };
+
+export const port = defaultPort;
 
 const app = express();
 const __dirname = import.meta.dirname;
@@ -26,7 +39,7 @@ app.use("/system", systemRouter);
 
 app.listen(port, () => {
 	try {
-		const msg = `App listening on ${getDeviceIp()}:${port}`;
+		const msg = `App listening on ${getDeviceIp()}`;
 		console.log(msg);
 		writeToLogFile(`${new Date().toISOString()}: ${msg}\n`);
 		runLocalScript(
