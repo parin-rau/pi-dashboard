@@ -22,7 +22,7 @@ export const defaultPort = 3000;
 // 	}
 // };
 
-export const port = defaultPort;
+export const port = (await readSettings("port").port) || defaultPort;
 
 const app = express();
 const __dirname = import.meta.dirname;
